@@ -34,7 +34,8 @@ jobs:
       # The extra carries a `python_version >= '3.10'` marker, so 3.9 installs
       # the CLI alone and those tests skip there, which is the supported shape.
       - run: pip install -e ".[dev,mcp]"
-      - run: pytest -q
+      # One worker per vCPU: the suite is ~6,600 small tests, serial for ~21 min.
+      - run: pytest -q -n auto
       # Source tests above intentionally exercise the checkout. This separate
       # gate installs the actual wheel into a clean venv and runs outside it.
       - run: pip install build
